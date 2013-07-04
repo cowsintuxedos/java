@@ -1,0 +1,101 @@
+import java.awt.BorderLayout;
+import java.awt.Dimension;
+import java.awt.FlowLayout;
+import java.awt.GridLayout;
+import java.awt.event.ActionEvent;
+import java.awt.event.ActionListener;
+import java.util.Timer;
+import java.util.TimerTask;
+
+import javax.swing.JButton;
+import javax.swing.JFrame;
+import javax.swing.JPanel;
+import javax.swing.JScrollBar;
+import javax.swing.JScrollPane;
+import javax.swing.JTextArea;
+import javax.swing.JTextField;
+import javax.swing.JTextPane;
+
+
+public class Rawr extends JFrame implements ActionListener {
+
+	ChatClient client;
+	JTextArea pane;
+	JTextField field;
+	private JScrollPane scroll;
+
+	public static void main (String[] args) {
+		new Rawr();
+	}
+
+	public Rawr() {
+		super("CowChat");
+		setDefaultCloseOperation(EXIT_ON_CLOSE);
+
+		setSize(new Dimension(400,600));
+		setLayout(new BorderLayout());
+		client = new ChatClient();
+		
+		initialize();
+		
+		/*Thread updateThread = new Thread(new UpdateTask());
+		updateThread.start();*/
+		
+		new UpdateTask();
+		
+		setVisible(true);
+	}
+
+	private void initialize() {
+		pane = new JTextArea(30,30);
+		pane.setEditable(false);
+		scroll = new JScrollPane(pane);
+		add(scroll, BorderLayout.CENTER);
+		
+		
+		field = new JTextField(20);
+		field.addActionListener(this);
+		add(field, BorderLayout.SOUTH);
+	}
+
+	public void update() {
+		String contents = pane.getText();
+		pane.setText(contents + client.getUpdate(0));
+		JScrollBar scrollbar = scroll.getVerticalScrollBar();
+		scrollbar.setValue(scrollbar.getMaximum());
+		
+	}
+
+	@Override
+	public void actionPerformed(ActionEvent a) {
+		if (a.getSource() == field) {
+			String message = field.getText();
+			client.submit(message);
+			field.setText("");
+		}
+
+	}
+	
+	class UpdateTask extends TimerTask {
+		public void run() {
+			update();
+		}
+
+	/*class UpdateTask implements Runnable{
+
+		@Override
+		public void run() {
+			while (true) {
+				
+				try {
+					update();
+					Thread.sleep(100);
+				} catch (InterruptedException e) {
+					e.printStackTrace();
+				}
+			}
+			
+		}*/
+		
+	}
+}

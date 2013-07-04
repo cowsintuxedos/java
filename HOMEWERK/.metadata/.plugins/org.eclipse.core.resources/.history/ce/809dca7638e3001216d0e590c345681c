@@ -1,0 +1,9 @@
+
+public class TreeNode {
+	public TreeNode(int value) {
+		
+	}
+	int value;
+	TreeNode left; //child
+	TreeNode right; //child
+}

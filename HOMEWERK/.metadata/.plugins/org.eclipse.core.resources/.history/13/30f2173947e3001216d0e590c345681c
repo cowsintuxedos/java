@@ -1,0 +1,29 @@
+import java.awt.Dimension;
+import java.awt.GridLayout;
+
+import javax.swing.JButton;
+import javax.swing.JPanel;
+
+
+public class InventoryPanel extends JPanel{
+	String[] columns;
+	Object[][] date;
+
+	public InventoryPanel() {
+		super();
+		this.setSize(new Dimension (400,200));
+		initialize();
+		setLayout(new GridLayout());
+		setVisible(true);
+	}
+	
+	private void initialize() {
+		Object[][] foo = 
+		   {{"Apples", new Double(0.99)},
+			{"Bananas", new Double(0.56)},
+			{"Bread", new Double(1.99)},
+			{"Water", new Double(4.99)}};
+		String[] columns = {"Name", "Price"};
+		}
+	}
+

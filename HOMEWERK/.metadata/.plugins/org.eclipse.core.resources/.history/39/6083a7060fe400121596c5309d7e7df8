@@ -1,0 +1,103 @@
+import java.io.BufferedReader;
+import java.io.IOException;
+import java.io.InputStreamReader;
+import java.io.PrintWriter;
+import java.net.ServerSocket;
+import java.net.Socket;
+import java.util.ArrayList;
+import java.util.Date;
+
+/**
+ * A TCP server that runs on port 9090.  When a client connects, it
+ * sends the client the current date and time, then closes the
+ * connection with that client.  Arguably just about the simplest
+ * server you can write.
+ */
+public class ChatServer {
+	static ArrayList <String> messages;
+	/**
+	 * Runs the server.
+	 */
+	static int count = 0;
+	static ChatRoom room;
+
+
+
+	public static void main(String[] args) throws IOException {
+
+		ServerSocket listener = new ServerSocket(9090); 
+		ChatRoom room = new ChatRoom();
+
+		try {
+			while (true) {
+				Socket socket = listener.accept();
+				System.out.println("New connection from " + socket.getInetAddress());
+
+				ChatLink link = new ChatLink(socket, room);
+				Thread thread = new Thread (link);
+				thread.start();
+			}
+		}
+		finally {
+			listener.close();
+		}
+	}
+}
+class ChatLink implements Runnable {
+
+	BufferedReader input;
+	PrintWriter output;
+	ChatRoom room;
+
+	public ChatLink (Socket socket, ChatRoom r) {
+		try {
+			BufferedReader input = new BufferedReader(new InputStreamReader(socket.getInputStream()));
+			PrintWriter output = new PrintWriter(socket.getOutputStream(), true);
+			room = r;
+
+		} catch (IOException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}
+
+
+	}
+
+	/**protocol
+	 * action:text
+	 * authenticate:keshav@password
+	 * message:blah
+	 * line:number
+	 */
+
+	@Override
+	public void run() {
+		while (true) {
+			try {
+				String i = input.readLine();
+				if (i != null) {
+					String action = i.substring(0, i.indexOf(':'));	
+					String rest = i.substring(i.indexOf(':') + 1);
+					
+					if (action.equals("authenticate")) {
+						String [] parts = rest.split("0");
+						boolean auth = room.authenticate(parts[0], parts[1]);
+						output.println("login" + auth);
+					}
+					
+					if (action.equals("message")) {
+						int line = room.addLine(rest);
+						System.out.println(rest);
+						output.println("line:" + line);
+					}
+				}
+
+			} catch (IOException e) {
+				e.printStackTrace();
+			}
+		}
+
+	}
+
+}
+

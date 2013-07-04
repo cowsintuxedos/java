@@ -1,0 +1,76 @@
+import java.io.BufferedReader;
+import java.io.IOException;
+import java.io.InputStreamReader;
+import java.io.PrintWriter;
+import java.net.ServerSocket;
+import java.net.Socket;
+import java.util.ArrayList;
+import java.util.Date;
+
+/**
+ * A TCP server that runs on port 9090.  When a client connects, it
+ * sends the client the current date and time, then closes the
+ * connection with that client.  Arguably just about the simplest
+ * server you can write.
+ */
+public class ChatServer {
+	static ArrayList <Socket> members;
+	static ArrayList <BufferedReader> readers;
+	static ArrayList <PrintWriter> writers;
+    /**
+     * Runs the server.
+     */
+    static int count = 0;
+	
+	public static void main(String[] args) throws IOException {
+        
+    	ServerSocket listener = new ServerSocket(9090);
+    	members = new ArrayList <Socket> ();
+    	readers = new ArrayList <BufferedReader> ();
+    	writers = new ArrayList <PrintWriter> ();
+        
+    	try {
+            while (true) {
+                Socket socket = listener.accept();
+                BufferedReader input = new BufferedReader(new InputStreamReader(socket.getInputStream()));
+                PrintWriter output = new PrintWriter(socket.getOutputStream(), true);
+                
+                members.add(socket);
+                readers.add(input);
+                writers.add(output);
+                
+                System.out.println("New connection from " + socket.getInetAddress());
+                
+            }
+        }
+        finally {
+            listener.close();
+        }
+    }
+
+	class ChatLink implements Runnable {
+		
+		BufferedReader input;
+		PrintWriter output;
+		
+		public ChatLink (Socket socket) {
+			try {
+				BufferedReader input = new BufferedReader(new InputStreamReader(socket.getInputStream()));
+				PrintWriter output = new PrintWriter(socket.getOutputStream(), true);
+			} catch (IOException e) {
+				// TODO Auto-generated catch block
+				e.printStackTrace();
+			}
+            
+			
+		}
+		
+		@Override
+		public void run() {
+			// TODO Auto-generated method stub
+			
+		}
+		
+	}
+	
+}

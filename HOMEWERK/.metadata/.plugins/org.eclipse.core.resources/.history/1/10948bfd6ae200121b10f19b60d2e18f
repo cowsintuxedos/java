@@ -1,0 +1,8 @@
+
+public class LinkList {
+	ListNode first;
+	
+	public LinkedList() {
+		
+	}
+}

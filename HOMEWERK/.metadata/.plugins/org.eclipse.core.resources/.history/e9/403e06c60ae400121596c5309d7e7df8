@@ -1,0 +1,63 @@
+import java.awt.Dimension;
+import java.awt.FlowLayout;
+import java.awt.GridLayout;
+import java.awt.event.ActionEvent;
+import java.awt.event.ActionListener;
+
+import javax.swing.JButton;
+import javax.swing.JFrame;
+import javax.swing.JPanel;
+import javax.swing.JTextArea;
+import javax.swing.JTextField;
+import javax.swing.JTextPane;
+
+
+public class Rawr extends JFrame implements ActionListener {
+
+	ChatClient client;
+	JTextArea pane;
+	JTextField field;
+
+	public static void main (String[] args) {
+		new Rawr();
+	}
+
+	public Rawr() {
+		super("RawrChat");
+		setDefaultCloseOperation(EXIT_ON_CLOSE);
+
+		setSize(new Dimension(400,600));
+		setLayout(new FlowLayout());
+
+		initialize();
+		setVisible(true);
+	}
+
+	private void initialize() {
+		JPanel messagePanel = new JPanel();
+		pane = new JTextArea(30,40);
+		pane.setEditable(false);
+		messagePanel.add(pane);
+		add (messagePanel);
+
+		JPanel submitPanel = new JPanel();
+		submitPanel.setLayout(new FlowLayout());
+		field = new JTextField(20);
+		submitPanel.add (field);
+
+		JButton button = new JButton("send");
+		button.setActionCommand("submit");
+		button.addActionListener(this);
+		submitPanel.add(button);
+		add(submitPanel);
+	}
+
+	@Override
+	public void actionPerformed(ActionEvent a) {
+		if (a.getActionCommand().equals("submit")) {
+
+		}
+
+	}
+
+}

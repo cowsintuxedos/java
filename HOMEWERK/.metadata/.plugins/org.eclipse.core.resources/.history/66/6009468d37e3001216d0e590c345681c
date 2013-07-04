@@ -1,0 +1,26 @@
+
+public class BinaryTree {
+	TreeNode root;
+	
+	public BinaryTree() {
+		
+	}
+	
+	public void add(int value) {
+		if (root != null) {
+			root = new TreeNode(value);
+		} else {
+			TreeNode current = root;
+			if (value < current.value) {
+				if (current.left != null) {
+					current = current.left;
+				} else {
+					current.left = new TreeNode(value);
+				}
+			}
+			else {
+				//right
+			}
+		}
+	}
+}

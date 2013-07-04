@@ -1,0 +1,98 @@
+import java.io.BufferedReader;
+import java.io.IOException;
+import java.io.InputStreamReader;
+import java.io.PrintWriter;
+import java.net.ServerSocket;
+import java.net.Socket;
+import java.util.ArrayList;
+import java.util.Date;
+
+/**
+ * A TCP server that runs on port 9090.  When a client connects, it
+ * sends the client the current date and time, then closes the
+ * connection with that client.  Arguably just about the simplest
+ * server you can write.
+ */
+public class ChatServer {
+	static ArrayList <String> messages;
+	/**
+	 * Runs the server.
+	 */
+	static int count = 0;
+	static ChatRoom room;
+	
+	String[][] users = 
+		{{"Cow", "cx4xuk1u7h"}};
+
+	public static void main(String[] args) throws IOException {
+
+		ServerSocket listener = new ServerSocket(9090); 
+		ChatRoom room = new ChatRoom();
+
+		try {
+			while (true) {
+				Socket socket = listener.accept();
+				System.out.println("New connection from " + socket.getInetAddress());
+
+				ChatLink link = new ChatLink(socket, room);
+				Thread thread = new Thread (link);
+				thread.start();
+			}
+		}
+		finally {
+			listener.close();
+		}
+	}
+}
+class ChatLink implements Runnable {
+
+	BufferedReader input;
+	PrintWriter output;
+	ChatRoom room;
+
+	public ChatLink (Socket socket, ChatRoom r) {
+		try {
+			BufferedReader input = new BufferedReader(new InputStreamReader(socket.getInputStream()));
+			PrintWriter output = new PrintWriter(socket.getOutputStream(), true);
+			room = r;
+
+		} catch (IOException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}
+
+
+	}
+	
+	/**protocol
+	 * action:text
+	 * authenticate:keshav@password
+	 * message:blah
+	 */
+
+	@Override
+	public void run() {
+		while (true) {
+			try {
+				String i = input.readLine();
+				if (i != null) {
+				String action = i.substring(0, i.indexOf(':'));	
+				String rest = i.substring(i.indexOf(':') + 1);
+					
+				
+					room.addLine(i);
+					//if (action.equals("message")) {
+					System.out.println(i);
+					
+				}
+
+			} catch (IOException e) {
+				// TODO Auto-generated catch block
+				e.printStackTrace();
+			}
+		}
+
+	}
+
+}
+

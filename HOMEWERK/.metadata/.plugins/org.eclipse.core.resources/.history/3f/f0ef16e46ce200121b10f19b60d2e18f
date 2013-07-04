@@ -1,0 +1,41 @@
+
+public class LinkedList {
+	ListNode first;
+	
+	public LinkedList() {
+		
+	}
+	
+	public void add(int number) {
+		if (first== null) {
+			first = new ListNode(number);
+			first.setValue(number);
+		}
+		else {
+			ListNode temp = first;
+			while (temp.getNext() != null) {
+				temp = temp.getNext();
+				
+			}
+			ListNode newNode = new ListNode();
+			newNode.setValue(number);
+			temp.setNext(newNode);
+		}
+		
+	}
+	
+	public void remove(int number) {
+		
+	}
+	
+	public void print() {
+		System.out.print(first.getValue());
+		//print out a node
+		//ask for the next value
+		//repeat
+	}
+	
+	public int size() {
+		return 0;
+	}
+}

@@ -1,0 +1,22 @@
+import java.util.ArrayList;
+
+
+public class ChatRoom {
+	ArrayList <String> messages;
+	
+	public ChatRoom () {
+		messages = new ArrayList <String> ();
+	}
+	public int addLine(String line) {
+		messages.add(line);
+		return messages.size();
+	}
+	
+	public String getConversation(int begin) {
+		String conversation = "";
+		for (int i = begin; i < messages.size(); i++) {
+			conversation += messages.get(i) + "\n";
+		}
+		return conversation;
+	}
+}

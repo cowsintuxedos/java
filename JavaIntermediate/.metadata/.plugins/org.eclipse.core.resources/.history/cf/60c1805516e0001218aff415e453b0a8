@@ -1,0 +1,24 @@
+import java.io.File;
+
+
+public class NoteAppDriver {
+
+	/**
+	 * @param args
+	 */
+	public static void main(String[] args) {
+		// TODO Auto-generated method stub
+        new NoteApp();
+        
+        File file = new File("C://NoteApp");
+    	if (!file.exists()) {
+    		if (file.mkdir()) {
+    			System.out.println("Directory created");
+    		} else {
+    			System.out.println("Failed to create directory");
+    		}
+    	}
+     
+	}
+
+}

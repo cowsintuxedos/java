@@ -1,0 +1,70 @@
+import java.io.BufferedReader;
+import java.io.IOException;
+import java.io.InputStreamReader;
+import java.io.PrintWriter;
+import java.net.Socket;
+import java.net.UnknownHostException;
+import java.util.Scanner;
+
+import javax.swing.JOptionPane;
+
+/**
+ * Trivial client for the date server.
+ */
+public class ChatClient {
+
+	BufferedReader input;
+	PrintWriter output;
+
+	public ChatClient () {
+		String serverAddress = JOptionPane.showInputDialog(
+				"Enter IP Address of a machine that is\n" +
+				"running the date service on port 9090:");
+		Socket s;
+		try {
+			s = new Socket(serverAddress, 9090);
+			input = new BufferedReader(new InputStreamReader(s.getInputStream()));
+			output = new PrintWriter(s.getOutputStream(), true);
+		} catch (UnknownHostException e) {
+			System.out.println("Couldn't find host :<");
+		} catch (IOException e) {
+			// TODO Auto-generated catch block
+			System.out.println("IO EXCEPTION MOFO");
+		}
+
+	}
+
+	public void submit (String text) {
+		output.println(text);
+	}
+
+	/**
+	 * Runs the client as an application.  First it displays a dialog
+	 * box asking for the IP address or hostname of a host running
+	 * the date server, then connects to it and displays the date that
+	 * it serves.
+	 */
+	/*public static void main(String[] args) throws IOException {
+        String serverAddress = JOptionPane.showInputDialog(
+            "Enter IP Address of a machine that is\n" +
+            "running the date service on port 9090:");
+        Socket s = new Socket(serverAddress, 9090);
+        BufferedReader input = new BufferedReader(new InputStreamReader(s.getInputStream()));
+        PrintWriter output = new PrintWriter(s.getOutputStream(), true);
+
+        Scanner scan = new Scanner(System.in);
+
+        while (true) {
+        	System.out.print("Andrew: ");
+        	String message = scan.nextLine();
+        	output.println("" + message);
+        	for (int x = 0; x <= 2147483647; x++) {
+        		output.println(x + "");
+        	}
+        }*/
+
+	/*String answer = input.readLine();
+        JOptionPane.showMessageDialog(null, answer);
+        System.exit(0);*/
+
+}

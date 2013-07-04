@@ -1,0 +1,14 @@
+import java.util.ArrayList;
+
+
+public class ChatRoom {
+	ArrayList <String> messages;
+	
+	public ChatRoom () {
+		messages = new ArrayList <String> ();
+	}
+	public int addLine(String line) {
+		messages.add(line);
+		return messages.size();
+	}
+}
